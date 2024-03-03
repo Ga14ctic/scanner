@@ -2,7 +2,7 @@
 # WebScanner
 
 
-WebScan Pro is a powerful penetration testing tool designed for web security assessments. It allows you to gather valuable information about a target website, including server version, PHP version, and performs a thorough nmap scan to unveil potential vulnerabilities.
+Webscanner is a penetration testing tool designed for web security assessments. It allows you to gather valuable information about a target website, including server version, PHP version, and performs a thorough nmap scan to unveil potential vulnerabilities.
 
 ## Features
 
