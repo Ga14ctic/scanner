@@ -27,7 +27,7 @@ python website_scanner.py -s example.com -sv -p -a
 
 1. Clone the repository
 ```bash
-git clone
+git clone https://github.com/Ga14ctic/scanner
 ```
 2. Install required python libraries
 ```bash
