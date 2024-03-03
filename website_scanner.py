@@ -1,6 +1,7 @@
 import requests
 import argparse
 from bs4 import BeautifulSoup
+import subprocess
 
 def get_server_version(url):
     try:
@@ -11,15 +12,22 @@ def get_server_version(url):
         print(f"Error: {e}")
         return None
 
-def get_additional_info(url):
+def get_php_version(url):
     try:
         response = requests.get(url)
         soup = BeautifulSoup(response.text, 'html.parser')
-        # Add more scraping logic here to extract additional information
-        # For example, extracting PHP version or any other details you're interested in
-        # Replace the following line with your specific logic
-        additional_info = "Additional information not implemented yet"
-        return additional_info
+        # Replace the following line with your specific logic to extract PHP version
+        # This is just an example, and you might need to adjust it based on the website's structure
+        php_version = soup.find('meta', {'name': 'generator'}).get('content')
+        return php_version
+    except Exception as e:
+        print(f"Error: {e}")
+        return None
+
+def nmap_scan(url):
+    try:
+        result = subprocess.run(['nmap', '-F', url], capture_output=True, text=True)
+        return result.stdout
     except Exception as e:
         print(f"Error: {e}")
         return None
@@ -28,6 +36,7 @@ def main():
     parser = argparse.ArgumentParser(description="Website Scanner")
     parser.add_argument('-s', '--site', help='Website URL', required=True)
     parser.add_argument('-sv', '--server', action='store_true', help='Get server version')
+    parser.add_argument('-p', '--php', action='store_true', help='Get PHP version')
     parser.add_argument('-a', '--all', action='store_true', help='Get all information')
 
     args = parser.parse_args()
@@ -39,10 +48,15 @@ def main():
         if server_version:
             print(f"Server Version: {server_version}")
 
+    if args.php or args.all:
+        php_version = get_php_version(site_url)
+        if php_version:
+            print(f"PHP Version: {php_version}")
+
     if args.all:
-        additional_info = get_additional_info(site_url)
-        if additional_info:
-            print(f"Additional Information: {additional_info}")
+        nmap_result = nmap_scan(site_url)
+        if nmap_result:
+            print(f"Nmap Scan Results:\n{nmap_result}")
 
 if __name__ == "__main__":
     main()
