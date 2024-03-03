@@ -27,7 +27,11 @@ def get_php_version(url):
 def nmap_scan(url):
     try:
         result = subprocess.run(['nmap', '-F', url], capture_output=True, text=True)
-        return result.stdout
+        if "Nmap done" in result.stderr:
+            # No open ports found
+            return "No open ports found."
+        else:
+            return result.stdout
     except Exception as e:
         print(f"Error: {e}")
         return None
